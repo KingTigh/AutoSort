@@ -172,7 +172,8 @@ runButton.grid(column=0, row = 3)
 
 #Label creation
 lbl = tkinter.Label(master, text='')
-lbl.grid(column=1, row=0)
+lbl.grid(column=0, row=4)
+
 
 
 
@@ -181,10 +182,10 @@ lbl.grid(column=1, row=0)
 # ! NO NEED TO CHANGE BELOW CODE
 if __name__ == "__main__":
     
-    
+    #tkinter GUI window
     master.mainloop()
 
-
+    #Watchdog Observer loop
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
@@ -193,12 +194,20 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(event_handler, path, recursive=True)
     observer.start()
-    # Create Temp txt file to update observer
-    rs = open(source_dir + "/SortIsRunning.txt", 'w')
-    rs.close()
+    # Create Temp txt file to update observer. Remove and create again if eixst already
+    try:
+        os.remove(source_dir + "/SortIsRunning.txt")
+        rs = open(source_dir + "/SortIsRunning.txt", 'w')
+        rs.close()
+    except:
+        rs = open(source_dir + "/SortIsRunning.txt", 'w')
+        rs.close()
+
+    #Console text
     print(("*\n")*3 +"Auto Sort is active in " + source_dir + 
     ". Use control C or close this window to end program"
     )
+    
     try:
         while True:
             sleep(10)
@@ -206,3 +215,4 @@ if __name__ == "__main__":
         os.remove(source_dir + "/SortIsRunning.txt")
         observer.stop()
     observer.join()
+
